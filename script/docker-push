@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -eu
+
+APP_ROOT="${APP_ROOT:-$(git rev-parse --show-toplevel)}"
+DOCKER_IMAGE="${DOCKER_IMAGE:-wenlock/awscli}"
+VERSION="${VERSION:-0.0.1}"
+DOCKER_REMOTE_CONFIG="${DOCKER_REMOTE_CONFIG:-}"
+TRAVIS_BRANCH="${TRAVIS_BRANCH:-}"
+
+if docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}" > /dev/null 2<&1; then
+  echo "==> pushing ${DOCKER_IMAGE}:${VERSION}"
+  eval "docker ${DOCKER_REMOTE_CONFIG} \
+        push  \
+        \"${DOCKER_IMAGE}:${VERSION}\""
+
+  if [ "$TRAVIS_BRANCH" == "master" ]; then
+    echo "==> pushing ${DOCKER_IMAGE}:latest"
+    eval "docker ${DOCKER_REMOTE_CONFIG} \
+          push  \
+          \"${DOCKER_IMAGE}:latest\""
+  fi
+else
+  echo "==> skipping image push, no login"
+fi

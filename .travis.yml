@@ -1,0 +1,16 @@
+sudo: required
+
+notifications:
+    email: false
+
+language: go
+
+services:
+  - docker
+
+script:
+    # Standard build
+    - BUILD_ARGS="--no-cache" make build
+
+after_success:
+    - make push

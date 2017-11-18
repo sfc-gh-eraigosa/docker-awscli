@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -eu
+
+APP_ROOT="${APP_ROOT:-$(git rev-parse --show-toplevel)}"
+BUILD_ARGS="${BUILD_ARGS:-}"
+DOCKER_IMAGE="${DOCKER_IMAGE:-wenlock/awscli}"
+VERSION="${VERSION:-0.0.1}"
+DOCKER_REMOTE_CONFIG="${DOCKER_REMOTE_CONFIG:-}"
+
+
+
+echo "==> building ${DOCKER_IMAGE}:${VERSION}"
+eval "docker ${DOCKER_REMOTE_CONFIG} \
+        build ${BUILD_ARGS} -f \"${APP_ROOT}/Dockerfile\" \
+        --tag \"${DOCKER_IMAGE}:${VERSION}\" ${APP_ROOT}"
+docker tag "${DOCKER_IMAGE}:${VERSION}" "${DOCKER_IMAGE}:latest"
