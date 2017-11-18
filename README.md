@@ -1,6 +1,6 @@
 # Another awscli
 
-![](https://travis-ci.org/wenlock/docker-awscli.svg?branch=master)
+[![](https://travis-ci.org/wenlock/docker-awscli.svg?branch=master)](https://travis-ci.org/wenlock/docker-awscli)
 
 Lets build another aws cli tool for docker so we can hack. :tada:
 
