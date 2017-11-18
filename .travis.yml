@@ -12,4 +12,7 @@ script:
     - BUILD_ARGS="--no-cache" make build
 
 after_success:
-    - TRAVIS_BRANCH=$TRAVIS_BRANCH make push
+    - TRAVIS_BRANCH=$TRAVIS_BRANCH \
+      DOCKER_USERNAME=$DOCKER_USERNAME \
+      DOCKER_PASSWORD=$DOCKER_PASSWORD \
+      make push
