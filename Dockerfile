@@ -8,10 +8,6 @@ ARG group=aws
 ARG uid=1000
 ARG gid=1000
 
-ENV S3_TMP /tmp/s3cmd.zip
-ENV S3_ZIP /tmp/s3cmd-master
-ENV RDS_TMP /tmp/RDSCLi.zip
-ENV RDS_VERSION 1.19.004
 ENV AWSCLI_VERSION=1.11.189
 
 USER root
