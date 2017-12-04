@@ -18,6 +18,7 @@ RUN set -x -v && apk --no-cache add \
         curl  \
         jq    \
         openssh \
+        groff \
     && python3 -m pip install \
                       python-dateutil \
                       awscli===${AWSCLI_VERSION} \
