@@ -8,7 +8,7 @@ ARG group=aws
 ARG uid=1000
 ARG gid=1000
 
-ENV AWSCLI_VERSION=1.11.189
+ENV AWSCLI_VERSION=1.15.21
 
 USER root
 RUN set -x -v && apk --no-cache add \
@@ -28,6 +28,8 @@ RUN set -x -v && apk --no-cache add \
     && chown -R ${user}:${group} "/home/${user}" \
     && chmod 755 "/home/${user}" \
     && chmod 700 "/home/${user}/.aws"
+
+COPY contrib /contrib
 
 USER aws
 
