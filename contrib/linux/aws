@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+
+export AWS_CLI_IMAGE="${AWS_CLI_IMAGE:-wenlock/awscli:latest}"
+#
+# Fix by including --no-include-email in all ecr get-login calls
+# https://docs.aws.amazon.com/cli/latest/reference/ecr/get-login.html
+# setup --no-include-email if this is ecr get-login
+# we can deprecate this script if we get a fix for the following https://github.com/aws/aws-cli/issues/3328
+function get_email_option {
+  local set_no_include_email='--no-include-email'
+  local no_include_email=''
+  if [[ ! "$(docker version --format '{{.Client.Version}}'|awk -F '.' '{print $1.$2}')" -ge "1706" ]]; then
+    if [ "$1" = "ecr" ]; then
+      for opt in "$@"; do
+        if [ "$opt" = "get-login" ]; then
+          for opt in "$@"; do
+            if [ "$opt" = '--no-include-email' ]; then
+              # we can clear the option since it's already set
+              set_no_include_email=''
+            fi
+          done
+          # set the option since this is ecr get-login
+          no_include_email="${set_no_include_email}"
+        fi
+      done
+    fi
+  fi
+  echo -n "${no_include_email}"
+}
+
+function aws {
+  docker run --rm -v "$(pwd):$(pwd)" \
+    -e AWS_ACCESS_KEY_ID \
+    -e AWS_SECRET_ACCESS_KEY \
+    -e AWS_DEFAULT_REGION \
+    ${AWS_CLI_IMAGE} \
+    aws $@
+}
+
+aws $@ $(get_email_option $@)
