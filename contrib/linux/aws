@@ -11,7 +11,7 @@ export AWS_CLI_IMAGE="${AWS_CLI_IMAGE:-wenlock/awscli:latest}"
 function get_email_option {
   local set_no_include_email='--no-include-email'
   local no_include_email=''
-  if [[ ! "$(docker version --format '{{.Client.Version}}'|awk -F '.' '{print $1.$2}')" -ge "1706" ]]; then
+  if [[ "$(docker version --format '{{.Client.Version}}'|awk -F '.' '{print $1.$2}')" -ge "1706" ]]; then
     if [ "$1" = "ecr" ]; then
       for opt in "$@"; do
         if [ "$opt" = "get-login" ]; then
