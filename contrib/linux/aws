@@ -31,6 +31,9 @@ function get_email_option {
 }
 
 function aws {
+  if [[ "$(docker images -q ${AWS_CLI_IMAGE} 2> /dev/null)" == "" ]]; then
+    docker pull ${AWS_CLI_IMAGE} > /dev/null 2<&1
+  fi
   docker run --rm -v "$(pwd):$(pwd)" \
     -e AWS_ACCESS_KEY_ID \
     -e AWS_SECRET_ACCESS_KEY \
